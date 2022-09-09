@@ -122,7 +122,7 @@ export default function HomePage() {
           <button onClick={() => setSearchField(searchFieldTemp)}>
             search
           </button>
-          <Link href={"/contacts/newContact"}>Add +</Link>
+          <Link href={"/contacts/NewContact"}>Add +</Link>
         </div>
       </Head>
 

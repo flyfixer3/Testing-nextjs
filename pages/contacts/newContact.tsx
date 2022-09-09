@@ -9,7 +9,7 @@ import * as Yup from "yup";
 
 type Props = {};
 
-export default function newContact({}: Props) {
+export default function NewContact({}: Props) {
   const [addContactWithPhonesMutation, { data, loading, error }] = useMutation(
     AddContactWithPhonesDocument
   );
