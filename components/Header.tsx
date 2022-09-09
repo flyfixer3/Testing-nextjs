@@ -8,6 +8,8 @@ let Container = styled.div({
   justifyContent: "space-between",
   backgroundColor: "green",
   margin: "0",
+  padding: "15px 20px",
+  alignItems: "center",
 });
 
 type Props = {};
@@ -15,8 +17,7 @@ type Props = {};
 export default function Header({}: Props) {
   return (
     <Container>
-      <BsList />
-      <div>header</div>
+      <h3>Header</h3>
       <div></div>
     </Container>
   );

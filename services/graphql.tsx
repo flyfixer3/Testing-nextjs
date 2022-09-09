@@ -1199,6 +1199,29 @@ export type AddContactWithPhonesMutationVariables = Exact<{
 
 export type AddContactWithPhonesMutation = { __typename?: 'mutation_root', insert_contact?: { __typename?: 'contact_mutation_response', returning: Array<{ __typename?: 'contact', first_name: string, last_name: string, id: number, phones: Array<{ __typename?: 'phone', number: string }> }> } | null };
 
+export type AddNumberToContactMutationVariables = Exact<{
+  contact_id: Scalars['Int'];
+  phone_number: Scalars['String'];
+}>;
+
+
+export type AddNumberToContactMutation = { __typename?: 'mutation_root', insert_phone?: { __typename?: 'phone_mutation_response', returning: Array<{ __typename?: 'phone', contact?: { __typename?: 'contact', id: number, last_name: string, first_name: string, phones: Array<{ __typename?: 'phone', number: string }> } | null }> } | null };
+
+export type DeleteContactMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteContactMutation = { __typename?: 'mutation_root', delete_contact_by_pk?: { __typename?: 'contact', first_name: string, last_name: string, id: number } | null };
+
+export type DeletePhoneMutationVariables = Exact<{
+  id: Scalars['Int'];
+  number: Scalars['String'];
+}>;
+
+
+export type DeletePhoneMutation = { __typename?: 'mutation_root', delete_phone_by_pk?: { __typename?: 'phone', id: number } | null };
+
 export type EditContactByIdMutationVariables = Exact<{
   id: Scalars['Int'];
   _set?: InputMaybe<Contact_Set_Input>;
@@ -1356,6 +1379,118 @@ export function useAddContactWithPhonesMutation(baseOptions?: Apollo.MutationHoo
 export type AddContactWithPhonesMutationHookResult = ReturnType<typeof useAddContactWithPhonesMutation>;
 export type AddContactWithPhonesMutationResult = Apollo.MutationResult<AddContactWithPhonesMutation>;
 export type AddContactWithPhonesMutationOptions = Apollo.BaseMutationOptions<AddContactWithPhonesMutation, AddContactWithPhonesMutationVariables>;
+export const AddNumberToContactDocument = gql`
+    mutation AddNumberToContact($contact_id: Int!, $phone_number: String!) {
+  insert_phone(objects: {contact_id: $contact_id, number: $phone_number}) {
+    returning {
+      contact {
+        id
+        last_name
+        first_name
+        phones {
+          number
+        }
+      }
+    }
+  }
+}
+    `;
+export type AddNumberToContactMutationFn = Apollo.MutationFunction<AddNumberToContactMutation, AddNumberToContactMutationVariables>;
+
+/**
+ * __useAddNumberToContactMutation__
+ *
+ * To run a mutation, you first call `useAddNumberToContactMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddNumberToContactMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addNumberToContactMutation, { data, loading, error }] = useAddNumberToContactMutation({
+ *   variables: {
+ *      contact_id: // value for 'contact_id'
+ *      phone_number: // value for 'phone_number'
+ *   },
+ * });
+ */
+export function useAddNumberToContactMutation(baseOptions?: Apollo.MutationHookOptions<AddNumberToContactMutation, AddNumberToContactMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddNumberToContactMutation, AddNumberToContactMutationVariables>(AddNumberToContactDocument, options);
+      }
+export type AddNumberToContactMutationHookResult = ReturnType<typeof useAddNumberToContactMutation>;
+export type AddNumberToContactMutationResult = Apollo.MutationResult<AddNumberToContactMutation>;
+export type AddNumberToContactMutationOptions = Apollo.BaseMutationOptions<AddNumberToContactMutation, AddNumberToContactMutationVariables>;
+export const DeleteContactDocument = gql`
+    mutation DeleteContact($id: Int!) {
+  delete_contact_by_pk(id: $id) {
+    first_name
+    last_name
+    id
+  }
+}
+    `;
+export type DeleteContactMutationFn = Apollo.MutationFunction<DeleteContactMutation, DeleteContactMutationVariables>;
+
+/**
+ * __useDeleteContactMutation__
+ *
+ * To run a mutation, you first call `useDeleteContactMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteContactMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteContactMutation, { data, loading, error }] = useDeleteContactMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteContactMutation(baseOptions?: Apollo.MutationHookOptions<DeleteContactMutation, DeleteContactMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteContactMutation, DeleteContactMutationVariables>(DeleteContactDocument, options);
+      }
+export type DeleteContactMutationHookResult = ReturnType<typeof useDeleteContactMutation>;
+export type DeleteContactMutationResult = Apollo.MutationResult<DeleteContactMutation>;
+export type DeleteContactMutationOptions = Apollo.BaseMutationOptions<DeleteContactMutation, DeleteContactMutationVariables>;
+export const DeletePhoneDocument = gql`
+    mutation DeletePhone($id: Int!, $number: String!) {
+  delete_phone_by_pk(contact_id: $id, number: $number) {
+    id
+  }
+}
+    `;
+export type DeletePhoneMutationFn = Apollo.MutationFunction<DeletePhoneMutation, DeletePhoneMutationVariables>;
+
+/**
+ * __useDeletePhoneMutation__
+ *
+ * To run a mutation, you first call `useDeletePhoneMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePhoneMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePhoneMutation, { data, loading, error }] = useDeletePhoneMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      number: // value for 'number'
+ *   },
+ * });
+ */
+export function useDeletePhoneMutation(baseOptions?: Apollo.MutationHookOptions<DeletePhoneMutation, DeletePhoneMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeletePhoneMutation, DeletePhoneMutationVariables>(DeletePhoneDocument, options);
+      }
+export type DeletePhoneMutationHookResult = ReturnType<typeof useDeletePhoneMutation>;
+export type DeletePhoneMutationResult = Apollo.MutationResult<DeletePhoneMutation>;
+export type DeletePhoneMutationOptions = Apollo.BaseMutationOptions<DeletePhoneMutation, DeletePhoneMutationVariables>;
 export const EditContactByIdDocument = gql`
     mutation EditContactById($id: Int!, $_set: contact_set_input) {
   update_contact_by_pk(pk_columns: {id: $id}, _set: $_set) {

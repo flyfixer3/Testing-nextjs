@@ -72,6 +72,39 @@ insert_contact(
 }
 `;
 
+const ADD_PHONE_TO_CONTACT = gql`
+mutation AddNumberToContact ($contact_id: Int!, $phone_number:String!) {
+  insert_phone(objects: {contact_id: $contact_id, number: $phone_number}) {
+    returning {
+      contact {
+        id
+        last_name
+        first_name
+        phones {
+          number
+        }
+      }
+    }
+  }
+}
+`;
+const DELETE_CONTACT = gql`
+mutation DeleteContact($id: Int!) {
+  delete_contact_by_pk(id: $id) {
+    first_name
+    last_name
+    id
+  }
+}
+`;
+const DELETE_PHONE = gql`
+mutation DeletePhone($id: Int!, $number: String!) {
+  delete_phone_by_pk(contact_id: $id, number: $number) {
+    id
+  }
+}
+`;
+
 const EDIT_CONTACT = gql`
 mutation EditContactById($id: Int!, $_set: contact_set_input) {
   update_contact_by_pk(pk_columns: {id: $id}, _set: $_set) {

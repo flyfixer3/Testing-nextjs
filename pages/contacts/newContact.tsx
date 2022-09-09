@@ -2,6 +2,8 @@ import PhoneForm from "#/components/PhoneForm";
 import { AddContactWithPhonesDocument } from "#/services/graphql";
 import { useMutation } from "@apollo/client";
 import { useFormik } from "formik";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import * as Yup from "yup";
 
@@ -11,7 +13,7 @@ export default function newContact({}: Props) {
   const [addContactWithPhonesMutation, { data, loading, error }] = useMutation(
     AddContactWithPhonesDocument
   );
-
+  //   const router = useRouter();
   const { values, handleSubmit, setFieldValue, handleChange, setValues } =
     useFormik({
       initialValues: {
@@ -45,6 +47,7 @@ export default function newContact({}: Props) {
 
   return (
     <div>
+      <Link href={"/"}>Back</Link>
       <form onSubmit={handleSubmit}>
         <label htmlFor="firstName">First Name</label>
         <input
@@ -80,6 +83,7 @@ export default function newContact({}: Props) {
           </div>
         ))}
         <PhoneForm
+          id={0}
           onSubmit={(newPhone) => {
             console.log("testt");
             const phonesData = [...values.phones];

@@ -1,11 +1,18 @@
+import { AddNumberToContactDocument } from "#/services/graphql";
+import { useMutation } from "@apollo/client";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
 type Props = {
   onSubmit: (phone: string) => void;
+  id: number;
 };
 
-export default function PhoneForm({ onSubmit }: Props) {
+export default function PhoneForm({ onSubmit, id }: Props) {
+  const [AddNumberToContact, { data, loading, error }] = useMutation(
+    AddNumberToContactDocument
+  );
+
   const { values, handleSubmit, resetForm, handleChange } = useFormik({
     initialValues: {
       phone: "",
@@ -19,6 +26,12 @@ export default function PhoneForm({ onSubmit }: Props) {
         .required("Required"),
     }),
     onSubmit: (data) => {
+      AddNumberToContact({
+        variables: {
+          contact_id: id,
+          phone_number: values.phone,
+        },
+      });
       onSubmit(data.phone);
       resetForm();
     },

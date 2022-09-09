@@ -8,10 +8,12 @@ import {
 } from "#/services/graphql";
 import { useEffect } from "react";
 import { useMutation } from "@apollo/client";
+import Link from "next/link";
 
 export default function Test() {
   const { query } = useRouter();
   const id = (query["id"] ?? 0) as number;
+  const router = useRouter();
   const { data: contact } = useGetContactDetailQuery({
     variables: {
       id: id,
@@ -66,6 +68,7 @@ export default function Test() {
 
   return (
     <div>
+      <Link href={"/"}>Back</Link>
       <form onSubmit={handleSubmit}>
         <label htmlFor="firstName">First Name</label>
         <input
@@ -101,6 +104,7 @@ export default function Test() {
           </div>
         ))}
         <PhoneForm
+          id={id}
           onSubmit={(newPhone) => {
             console.log("testt");
             const phonesData = [...values.phones];

@@ -5,7 +5,41 @@ import {
   useGetContactListQuery,
   useGetTotalCountQuery,
 } from "#/services/graphql";
+import styled from "@emotion/styled";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
+
+let Container = styled.div({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  flexDirection: "column",
+  padding: "15px 20px",
+});
+
+let Head = styled.div({
+  width: "100%",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  "& div button": {
+    margin: "0 10px",
+  },
+});
+
+let Content = styled.div({
+  width: "100%",
+});
+
+let TableHeader = styled.div({
+  display: "flex",
+  justifyContent: "space-between",
+  "& h4": {
+    width: "25%",
+    display: "flex",
+    justifyContent: "center",
+  },
+});
 
 export default function HomePage() {
   const [selectedTab, setSelectedTab] = useState<
@@ -50,7 +84,11 @@ export default function HomePage() {
     },
   });
 
-  const { data: contacts, loading } = useGetContactListQuery({
+  const {
+    data: contacts,
+    loading,
+    refetch,
+  } = useGetContactListQuery({
     variables: {
       where: tabCondition,
       limit: limit,
@@ -58,40 +96,59 @@ export default function HomePage() {
     },
   });
 
-  console.log(totalCount);
-  console.log(contacts);
-
   useEffect(() => {
     setCurrentPage(0);
   }, [selectedTab]);
 
   return (
-    <div>
-      <div>
-        <input
-          type="text"
-          name=""
-          id=""
-          onChange={(event) => setSearchFieldTemp(event.target.value)}
-        />
-        <button onClick={() => setSearchField(searchFieldTemp)}>search</button>
-      </div>
-      <button onClick={() => setSelectedTab("all")}>All</button>
-      <button onClick={() => setSelectedTab("reguler")}>Reguler List</button>
-      <button onClick={() => setSelectedTab("favourite")}>
-        Favourite List
-      </button>
-      <div>
+    <Container>
+      <Head>
+        <div>
+          <button onClick={() => setSelectedTab("all")}>All</button>
+          <button onClick={() => setSelectedTab("reguler")}>
+            Reguler List
+          </button>
+          <button onClick={() => setSelectedTab("favourite")}>
+            Favourite List
+          </button>
+        </div>
+        <div>
+          <input
+            type="text"
+            name=""
+            id=""
+            onChange={(event) => setSearchFieldTemp(event.target.value)}
+          />
+          <button onClick={() => setSearchField(searchFieldTemp)}>
+            search
+          </button>
+          <Link href={"/contacts/newContact"}>Add +</Link>
+        </div>
+      </Head>
+
+      <Content>
         {contacts?.contact.length === 0 ? (
           <span> None..</span>
         ) : (
           <div>
             <div>
+              <TableHeader>
+                <h4>Nama</h4>
+                <h4>Dibuat pada Tanggal</h4>
+                <h4>Phones</h4>
+                <h4>Actions</h4>
+              </TableHeader>
               {loading ? (
                 <span>Loading...</span>
               ) : (
                 contacts?.contact.map((contact) => {
-                  return <ContactCard key={contact.id} contact={contact} />;
+                  return (
+                    <ContactCard
+                      refetch={refetch}
+                      key={contact.id}
+                      contact={contact}
+                    />
+                  );
                 })
               )}
             </div>
@@ -103,7 +160,7 @@ export default function HomePage() {
             />
           </div>
         )}
-      </div>
-    </div>
+      </Content>
+    </Container>
   );
 }
